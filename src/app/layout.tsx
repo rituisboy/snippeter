@@ -1,8 +1,18 @@
+import { Toaster } from "@/components/ui/sonner";
+
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { ClerkProvider } from "@clerk/nextjs";
-
+import {
+  ClerkProvider,
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  UserButton,
+} from "@clerk/nextjs";
+import Image from "next/image";
+import Link from "next/link";
+import { ThemeProvider } from "@/components/theme-provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -18,7 +28,37 @@ export default function RootLayout({
   return (
     <html lang="en">
       <ClerkProvider>
-        <body className={inter.className}>{children}</body>
+        <body className={inter.className}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <div className="h-20 flex pr-3 justify-between items-center border-b-2">
+              <Link
+                href="/"
+                className="text-3xl pl-10"
+              >{`<   Snippeter    >`}</Link>
+              <div>
+                <SignedIn>
+                  <UserButton />
+                </SignedIn>
+                <SignedOut>
+                  <SignInButton />
+                  <Image
+                    src="/clerk.svg"
+                    alt="Clerk.dev"
+                    width={200}
+                    height={200}
+                  />
+                </SignedOut>
+              </div>
+            </div>
+            {children}
+            <Toaster richColors expand={false} position="bottom-right" />
+          </ThemeProvider>
+        </body>
       </ClerkProvider>
     </html>
   );
