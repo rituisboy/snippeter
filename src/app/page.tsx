@@ -54,7 +54,7 @@ export default function Home() {
   return (
     <div className="flex h-[calc(100dvh-5rem)] ">
       <SideBar setView={setView} />
-      <div className="flex flex-col">
+      <div className="flex flex-col w-full">
         <div className="w-full h-20 flex justify-center items-center ">
           <div className="flex relative">
             <input
@@ -66,9 +66,10 @@ export default function Home() {
           </div>
         </div>
         <div
-          className="p-3 gap-4 grid
-        overflow-y-auto md:grid-cols-2 xl:grid-cols-4  lg:grid-cols-3
-        h-max  w-max  flex justify-around items-center"
+          className="p-3 gap-1 grid ml-4
+        overflow-y-auto md:grid-cols-2 xl:grid-cols-5  lg:grid-cols-3
+        flex justify-around items-center
+        "
         >
           {snippets.map((snippet) => (
             <SnippetCard

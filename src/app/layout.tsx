@@ -55,7 +55,8 @@ export default function RootLayout({
                 </SignedOut>
               </div>
             </div>
-            {children}
+            <div>{children}</div>
+
             <Toaster richColors expand={false} position="bottom-right" />
           </ThemeProvider>
         </body>

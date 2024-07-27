@@ -61,7 +61,7 @@ const Edit: FC<ViewProps> = ({ snippet, setEditMode }) => {
       <CodeSnippet
         readOnly={false}
         code={snippet.code}
-        language={snippet.language}
+        language={language}
         setLanguage={setLanguage}
       />
       <div className="flex gap-3">

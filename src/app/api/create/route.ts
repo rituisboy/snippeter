@@ -8,7 +8,7 @@ export async function POST() {
   const snippet = await Snippet.create({
     title: "New Snippet",
     description: "New Description",
-    code: "New Code",
+    code: `console.log("hello world")`,
   });
 
   return new Response(JSON.stringify(snippet));

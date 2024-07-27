@@ -16,7 +16,7 @@ const CreateSnippet = ({
 
     const { data } = await axios.post("/api/create");
 
-    setSnippets((prev: any) => [data, ...prev]);
+    setSnippets((prev: any) => [...prev, data]);
     setIsClicked(false);
   };
   return (

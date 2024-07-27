@@ -23,6 +23,7 @@ import ace from "ace-builds/src-noconflict/ace";
 import useSnippetStore from "@/store";
 import JsIcon from "@/icons/JsIcon";
 import PyIcon from "@/icons/PyIcon";
+import LangIcon from "./LangIcon";
 
 const CodeSnippet = ({
   code,
@@ -37,7 +38,7 @@ const CodeSnippet = ({
 }) => {
   const [showCopy, setShowCopy] = useState<boolean>(false);
   const [editorCode, setEditorCode] = useState(code);
-
+  const [editorLang, setEditorLang] = useState(language || "javascript");
   const [theme, setTheme] = useState("dracula");
   const editorRef = useRef(null);
   const { editCode, setEditCode } = useSnippetStore();
@@ -86,10 +87,14 @@ const CodeSnippet = ({
     <div className="w-[40vw]">
       <div className="rounded-t-xl  bg-[#35353e] p-2 px-5 flex justify-between items-center">
         {!readOnly ? (
-          <LangSelect language={language} setLanguage={setLanguage!} />
+          <LangSelect
+            language={language}
+            setLanguage={setLanguage!}
+            setEditorLang={setEditorLang}
+          />
         ) : (
           <div className="flex text-muted-foreground gap-2">
-            <PyIcon /> <span>{language}</span>
+            <LangIcon language={language} />
           </div>
         )}
 
@@ -111,7 +116,7 @@ const CodeSnippet = ({
       <AceEditor
         className="border rounded-b-xl"
         onChange={handleChange}
-        mode={language}
+        mode={editorLang}
         theme={theme}
         name="blah2"
         fontSize={15}

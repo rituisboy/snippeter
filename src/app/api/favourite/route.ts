@@ -6,8 +6,10 @@ export async function POST(req: NextRequest) {
   const { id } = await req.json();
 
   const snippet = await Snippet.findById(id);
-  snippet!.favourite = !snippet!.favourite;
+  if (snippet) {
+    snippet!.favourite = !snippet!.favourite;
 
-  await snippet.save();
+    await snippet.save();
+  }
   return NextResponse.json({ status: 200 });
 }

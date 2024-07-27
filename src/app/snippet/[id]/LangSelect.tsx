@@ -14,15 +14,18 @@ import {
 export function LangSelect({
   language,
   setLanguage,
+  setEditorLang,
 }: {
   language: string;
   setLanguage: React.Dispatch<React.SetStateAction<string>>;
+  setEditorLang: React.Dispatch<React.SetStateAction<string>>;
 }) {
   return (
     <Select
-      // value={language}
+      value={language}
       onValueChange={(val) => {
         setLanguage(val);
+        setEditorLang(val);
       }}
     >
       <SelectTrigger className="w-[180px]">
