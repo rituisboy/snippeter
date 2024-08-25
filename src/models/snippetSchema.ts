@@ -1,4 +1,4 @@
-import mongoose, { Document } from "mongoose";
+import mongoose, { Document, Schema } from "mongoose";
 import { Model } from "mongoose";
 
 interface ISnippet extends Document {
@@ -7,6 +7,7 @@ interface ISnippet extends Document {
   code: string;
   favourite: boolean;
   language: string;
+  user: string;
 }
 
 const snippetSchema = new mongoose.Schema({
@@ -15,6 +16,7 @@ const snippetSchema = new mongoose.Schema({
   code: { type: String, required: true },
   favourite: { type: Boolean, default: false },
   language: { type: String, required: true, default: "javascript" },
+  user: { type: String, required: true },
 });
 
 const Snippet: Model<ISnippet> =

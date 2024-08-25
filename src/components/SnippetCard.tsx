@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Ellipsis, Heart } from "lucide-react";
 import axios from "axios";
+import useSnippetStore from "@/store";
 
 const SnippetCard = ({
   snippet,
@@ -22,6 +23,7 @@ const SnippetCard = ({
 }) => {
   const router = useRouter();
   const [isFavourite, setIsFavourite] = useState(snippet.favourite || false);
+  const { setSnippets: setStoredSnippet, snippets } = useSnippetStore();
 
   const handleClick = () => {
     router.push(`/snippet/${snippet._id}`);
@@ -47,7 +49,13 @@ const SnippetCard = ({
         },
       }
     );
+    const newSnip = snippets.map((snip) =>
+      snip._id == snippet._id ? { ...snip, favourite: !snip.favourite } : snip
+    );
+
+    setStoredSnippet(newSnip);
   };
+
   return (
     <div
       onClick={handleClick}

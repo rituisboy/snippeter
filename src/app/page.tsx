@@ -1,8 +1,10 @@
 "use client";
+import AddOrCreateNew from "@/components/AddOrCreateNew";
 import CreateSnippet from "@/components/CreateSnippet";
 import SideBar from "@/components/SideBar";
 import SnippetCard from "@/components/SnippetCard";
 import useSnippetStore from "@/store";
+import { useAuth, RedirectToSignIn } from "@clerk/nextjs";
 import axios from "axios";
 import { Search } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -18,19 +20,25 @@ export interface snippetProps {
 }
 
 export default function Home() {
-  const [snippets, setSnippets] = useState<snippetProps[]>([]);
+  const [snippets, setSnippets] = useState<snippetProps[] | []>([]);
   const setSnippetsStore = useSnippetStore((state) => state.setSnippets);
-  const { snippets: storedSnippet } = useSnippetStore();
+  const { snippets: storedSnippet, libSnippets } = useSnippetStore();
   const [view, setView] = useState("all");
   const [inputState, setInputState] = useState("");
 
+  const { isSignedIn } = useAuth();
+
   useEffect(() => {
     const fetchSnippets = async () => {
-      const { data } = await axios.get("/api/create");
+      try {
+        const { data } = await axios.get("/api/create");
 
-      setSnippetsStore(data);
+        setSnippetsStore(data);
 
-      setSnippets(data);
+        setSnippets(data);
+      } catch (error) {
+        console.log(error);
+      }
     };
 
     fetchSnippets();
@@ -45,14 +53,23 @@ export default function Home() {
 
   useEffect(() => {
     if (snippets) {
-      if (view == "fav")
-        setSnippets((prev) => prev.filter((snip) => snip.favourite));
-      if (view == "all" && storedSnippet) setSnippets(storedSnippet);
+      if (view == "fav") {
+        const newSnip = storedSnippet.filter((snip) => snip.favourite);
+        console.log(newSnip);
+        setSnippets(newSnip);
+        // setSnippets(storedSnippet.filter((snip) => snip.favourite));
+      } else if (view == "all" && storedSnippet) {
+        setSnippets(storedSnippet);
+      } else {
+        setSnippets(libSnippets);
+      }
     }
   }, [view]);
 
+  if (!isSignedIn) <RedirectToSignIn />;
+
   return (
-    <div className="flex h-[calc(100dvh-5rem)] ">
+    <div className="flex h-[calc(100dvh-5rem)]">
       <SideBar setView={setView} />
       <div className="flex flex-col w-full">
         <div className="w-full h-20 flex justify-center items-center ">
@@ -66,19 +83,22 @@ export default function Home() {
           </div>
         </div>
         <div
-          className="p-3 gap-1 grid ml-4
+          className="p-3 gap-1 grid ml-4 min-h-72 gap-y-5
         overflow-y-auto md:grid-cols-2 xl:grid-cols-5  lg:grid-cols-3
         flex justify-around items-center
         "
         >
-          {snippets.map((snippet) => (
-            <SnippetCard
-              key={snippet._id}
-              snippet={snippet}
-              setSnippets={setSnippets}
-            />
-          ))}
-          <CreateSnippet setSnippets={setSnippets} />
+          {snippets &&
+            snippets.length > 0 &&
+            snippets.map((snippet) => (
+              <SnippetCard
+                key={snippet._id}
+                snippet={snippet}
+                setSnippets={setSnippets}
+              />
+            ))}
+          {view == "all" && <CreateSnippet setSnippets={setSnippets} />}
+          {view != "all" && view != "fav" && <AddOrCreateNew view={view} />}
         </div>
       </div>
     </div>

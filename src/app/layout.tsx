@@ -56,9 +56,8 @@ export default function RootLayout({
               </div>
             </div>
             <div>{children}</div>
-
-            <Toaster richColors expand={false} position="bottom-right" />
           </ThemeProvider>
+          <Toaster richColors expand={false} position="bottom-right" />
         </body>
       </ClerkProvider>
     </html>

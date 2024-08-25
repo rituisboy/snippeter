@@ -4,6 +4,7 @@ import { snippetProps } from "@/app/page";
 import axios from "axios";
 import { LoaderIcon, Plus } from "lucide-react";
 import React, { Dispatch, SetStateAction, useState } from "react";
+import { Button } from "./ui/button";
 
 const CreateSnippet = ({
   setSnippets,
@@ -20,16 +21,17 @@ const CreateSnippet = ({
     setIsClicked(false);
   };
   return (
-    <button
+    <Button
+      variant={"outline"}
       onClick={handleClick}
-      className="size-64 rounded-[2rem] border flex justify-center items-center bg-zinc-900"
+      className="size-64 rounded-[2rem] border flex justify-center items-center bg-zinc-900 "
     >
       {isClicked ? (
         <LoaderIcon size={100} className="animate-spin" />
       ) : (
         <Plus size={100} strokeWidth={0.5} />
       )}
-    </button>
+    </Button>
   );
 };
 
